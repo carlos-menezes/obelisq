@@ -1,18 +1,6 @@
 import z from "zod";
 import { TEnvironmentLineKeyValue } from "./parser";
 
-type TObelisqEnvironmentKeys = {
-  A: string;
-  B: number;
-};
-
-const environment = <TKey extends keyof TObelisqEnvironmentKeys>(key: TKey) => {
-  return process.env[key as string] as TObelisqEnvironmentKeys[TKey];
-};
-
-const a = environment("A");
-const b = environment("B");
-
 type TGenerateObelisqFileParams = {
   entries: TEnvironmentLineKeyValue[];
 };
