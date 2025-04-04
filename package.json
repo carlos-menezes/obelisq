@@ -1,0 +1,37 @@
+{
+  "name": "@obelisq/env",
+  "version": "1.0.0",
+  "description": "A package for accessing environment variables in a Node.js application",
+  "main": "dist/library/index.js",
+  "bin": {
+    "obelisq": "dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/library/index.mjs",
+      "require": "./dist/library/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/cli/index.ts src/library/index.ts --sourcemap --format esm,cjs --dts",
+    "prepublish": "pnpm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271",
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
