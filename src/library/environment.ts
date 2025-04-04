@@ -7,7 +7,7 @@ type TExtendEnvironmentParams = {
 export const extendEnvironment = async ({
   entries,
 }: TExtendEnvironmentParams) => {
-  for (const [index, { key, value }] of entries.entries()) {
+  for (const { key, value } of entries) {
     process.env[key] = value;
   }
 };

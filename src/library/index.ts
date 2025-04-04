@@ -4,6 +4,9 @@ import { parseEnvironment, TEnvironmentLineKeyValue } from "./parser";
 import { extendEnvironment } from "./environment";
 
 type TSetupParams = {
+  /**
+   * Path to the `.env` file to be parsed.
+   */
   file: PathLike;
 };
 
