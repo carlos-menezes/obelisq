@@ -23,7 +23,7 @@ In the entrypoint to your app (e.g. `index.ts`), call `setup` to load your `.env
 
 ```ts
 // index.ts
-import { setup } from "@obelisq/env";
+import { setup } from "obelisq";
 
 // Takes additional, optional configuration.
 // Returns a list of entries (`TEnvironmentLineKeyValue`) which may be used for e.g. validation purposes.
