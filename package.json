@@ -25,6 +25,7 @@
   "license": "ISC",
   "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271",
   "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.14.0",
     "mocha": "^11.1.0",
@@ -34,6 +35,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
+    "cross-spawn": "^7.0.6",
     "zod": "^3.24.2"
   },
   "publishConfig": {

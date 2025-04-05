@@ -29,10 +29,23 @@ import { setup } from "@obelisq/env";
 await setup();
 ```
 
-> [!CAUTION]
-> The feature below is partially available.
+You can also run `$ obelisq <script>` to load the environment variables into `process.env` for another Node script. Say you have a file `log-env.js` which simply executes `console.log(process.env)`. You can inject the values from your environment file into `process.env` by running the following command:
 
-You can also run `$ obelisq -- <script>` to load the environment variables into `process.env`.
+```sh
+obelisq node log-env.js
+```
+
+The output should contain:
+
+```sh
+$ obelisq node log-env.js
+
+{
+  // ...
+  SUPER_SECRET_KEY: 'your_secret_key',
+  API_VERSION: '2'
+}
+```
 
 ## Type-safety
 
