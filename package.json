@@ -1,6 +1,6 @@
 {
-  "name": "@obelisq/env",
-  "version": "1.0.0",
+  "name": "obelisq",
+  "version": "0.1.0",
   "description": "A package for accessing environment variables in a Node.js application",
   "main": "dist/library/index.js",
   "bin": {
@@ -16,22 +16,33 @@
     }
   },
   "scripts": {
-    "build": "tsup src/cli/index.ts src/library/index.ts --sourcemap --format esm,cjs --dts",
+    "build": "tsup src/cli/index.ts src/library/index.ts --sourcemap --format esm --dts",
     "prepublish": "pnpm run build",
-    "test": "mocha --require ts-node/register --timeout 10000 --exit \"src/**/*.test.ts\""
+    "test": "mocha --require ts-node/register --timeout 10000 --exit \"src/**/*.test.ts\"",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271",
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.24.0",
     "@types/cross-spawn": "^6.0.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.14.0",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.1",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "mocha": "^11.1.0",
+    "prettier": "3.5.3",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.29.0"
   },
   "dependencies": {
     "commander": "^13.1.0",
@@ -40,5 +51,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

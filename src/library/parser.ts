@@ -1,4 +1,5 @@
 import z from "zod";
+import { resolveEnvironmentVariables } from "./resolver";
 
 export type TParseEnvironmentLineReturnType =
   | {
@@ -110,6 +111,7 @@ const parseEnvironmentLine = async (
 
 export const parseEnvironment = async ({
   content,
-}: TParseEnvironmentParams): Promise<TParseEnvironmentLineReturnType[]> => {
-  return Promise.all(content.map(parseEnvironmentLine));
-};
+}: TParseEnvironmentParams): Promise<TParseEnvironmentLineReturnType[]> =>
+  resolveEnvironmentVariables({
+    entries: await Promise.all(content.map(parseEnvironmentLine)),
+  });

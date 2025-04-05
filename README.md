@@ -1,12 +1,11 @@
-# `@obelisq/env`
+# Obelisq 🔺
 
-> [!CAUTION]
-> This library/CLI hasn't been published to the `npm` registry yet as many features are missing.
+Load environment variables from `.env` into `NodeJS.ProcessEnv`.
 
 ## Install
 
 ```ts
-pnpm add @obelisq/env
+pnpm add obelisq
 ```
 
 ## Usage
@@ -63,3 +62,21 @@ type TObelisqEnvironmentKeys = {
   API_VERSION: number;
 };
 ```
+
+## Variable expansion
+
+Variable expansion works out of the box without any additional packages or configuration steps. If your environment looks like this:
+
+```sh
+SUPER_SECRET_KEY=your_secret_key
+API_VERSION=2${SUPER_SECRET_KEY}
+```
+
+Running `$ obelisq` will add the following to `process.env`:
+
+```ts
+SUPER_SECRET_KEY: 'your_secret_key',
+API_VERSION: '2your_secret_key'
+```
+
+Note that it's advisable to run `$ obelisq generate` every time you change your `.env` as expansion may change the value's assumed type.

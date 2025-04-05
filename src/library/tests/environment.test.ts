@@ -5,7 +5,16 @@ import assert from "assert";
 describe("environment.ts", () => {
   it("should extend the environment", async () => {
     await extendEnvironment({
-      entries: [{ key: "TEST_KEY", value: "TEST_VALUE", kind: "key-value" }],
+      entries: [
+        {
+          key: "TEST_KEY",
+          value: "TEST_VALUE",
+          kind: "key-value",
+          metadata: {
+            type: "string",
+          },
+        },
+      ],
     });
 
     assert.equal(
