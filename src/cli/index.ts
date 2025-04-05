@@ -4,6 +4,7 @@ import { setup } from "../library";
 import { generateObelisqFile } from "../library/generated";
 import { readFile, writeFile } from "node:fs/promises";
 import { parseEnvironment, TEnvironmentLineKeyValue } from "../library/parser";
+import { environment } from "./obelisq";
 
 const program = new Command();
 
@@ -22,13 +23,11 @@ program
   .action(async (options) => {
     const content = (await readFile(".env", { encoding: "utf-8" })).split("\n");
     const parsedLines = await parseEnvironment({ content });
-
     const entries = parsedLines.filter(
       (entry) => entry.kind === "key-value"
     ) as TEnvironmentLineKeyValue[];
 
     const outputPath = options.output || "obelisq.ts";
-
     await writeFile(outputPath, Buffer.from(generateObelisqFile({ entries })));
   });
 

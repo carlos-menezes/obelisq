@@ -1,28 +1,7 @@
-import z from "zod";
 import { TEnvironmentLineKeyValue } from "./parser";
 
 type TGenerateObelisqFileParams = {
   entries: TEnvironmentLineKeyValue[];
-};
-
-type TAssumeValueTypeParams = {
-  value: string;
-};
-
-const assumeValueType = ({ value }: TAssumeValueTypeParams) => {
-  if (z.boolean().safeParse(value).success) {
-    return "boolean";
-  }
-
-  if (z.number().safeParse(Number(value)).success) {
-    return "number";
-  }
-
-  if (z.string().safeParse(value).success) {
-    return "string";
-  }
-
-  throw new Error(`Unable to determine type for value: ${value}`);
 };
 
 const generateEnvironmentKeysType = ({
@@ -30,7 +9,7 @@ const generateEnvironmentKeysType = ({
 }: Pick<TGenerateObelisqFileParams, "entries">) => {
   return `type TObelisqEnvironmentKeys = {
   ${entries
-    .map(({ key, value }) => `${key}: ${assumeValueType({ value })};`)
+    .map(({ key, metadata }) => `${key}: ${metadata.type};`)
     .join("\n  ")}
 };`;
 };
@@ -42,6 +21,5 @@ export const generateObelisqFile = ({
 
 export const environment = <TKey extends keyof TObelisqEnvironmentKeys>(key: TKey) => {
     return process.env[key as string] as TObelisqEnvironmentKeys[TKey];
-};
-  `;
+};`;
 };

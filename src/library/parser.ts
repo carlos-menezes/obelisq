@@ -1,3 +1,5 @@
+import z from "zod";
+
 export type TParseEnvironmentLineReturnType =
   | {
       /**
@@ -7,16 +9,21 @@ export type TParseEnvironmentLineReturnType =
       kind: "comment";
       key?: never;
       value: string;
+      metadata?: never;
     }
   | {
       kind: "key-value";
       key: string;
       value: string;
+      metadata: {
+        type: "string" | "number" | "boolean";
+      };
     }
   | {
       kind: "empty";
       key?: never;
       value?: never;
+      metadata?: never;
     };
 
 export type TEnvironmentLineComment = Extract<
@@ -36,6 +43,26 @@ export type TEnvironmentLineEmpty = Extract<
 
 type TParseEnvironmentParams = {
   content: string[];
+};
+
+type TAssumeValueTypeParams = {
+  value: string;
+};
+
+const assumeValueType = ({ value }: TAssumeValueTypeParams) => {
+  if (z.boolean().safeParse(value).success) {
+    return "boolean";
+  }
+
+  if (z.number().safeParse(Number(value)).success) {
+    return "number";
+  }
+
+  if (z.string().safeParse(value).success) {
+    return "string";
+  }
+
+  throw new Error(`Unable to determine type for value: ${value}`);
 };
 
 const parseComment = (line: string): TEnvironmentLineComment => {
@@ -59,6 +86,9 @@ const parseKeyValue = (line: string): TEnvironmentLineKeyValue => {
     kind: "key-value",
     key: key.trim(),
     value: value.trim(),
+    metadata: {
+      type: assumeValueType({ value }),
+    },
   };
 };
 

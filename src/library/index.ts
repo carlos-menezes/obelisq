@@ -24,6 +24,4 @@ export const setup = async ({ file }: TSetupParams) => {
   ) as TEnvironmentLineKeyValue[];
 
   await extendEnvironment({ entries });
-
-  console.log(process.env);
 };
