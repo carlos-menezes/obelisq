@@ -46,8 +46,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
-    "cross-spawn": "^7.0.6",
-    "zod": "^3.24.2"
+    "cross-spawn": "^7.0.6"
   },
   "publishConfig": {
     "access": "public"

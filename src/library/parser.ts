@@ -1,5 +1,6 @@
-import z from "zod";
 import { resolveEnvironmentVariables } from "./resolver";
+
+type TMetadataType = "string" | "number" | "boolean";
 
 export type TParseEnvironmentLineReturnType =
   | {
@@ -17,7 +18,7 @@ export type TParseEnvironmentLineReturnType =
       key: string;
       value: string;
       metadata: {
-        type: "string" | "number" | "boolean";
+        type: TMetadataType;
       };
     }
   | {
@@ -50,20 +51,21 @@ type TAssumeValueTypeParams = {
   value: string;
 };
 
-const assumeValueType = ({ value }: TAssumeValueTypeParams) => {
-  if (z.boolean().safeParse(value).success) {
+const assumeValueType = ({ value }: TAssumeValueTypeParams): TMetadataType => {
+  const lower = value.toLowerCase();
+
+  // Check for boolean
+  if (lower === "true" || lower === "false") {
     return "boolean";
   }
 
-  if (z.number().safeParse(Number(value)).success) {
+  // Check for number (must be a valid finite number)
+  if (!isNaN(Number(value)) && isFinite(Number(value))) {
     return "number";
   }
 
-  if (z.string().safeParse(value).success) {
-    return "string";
-  }
-
-  throw new Error(`Unable to determine type for value: ${value}`);
+  // Fallback to string
+  return "string";
 };
 
 const parseComment = (line: string): TEnvironmentLineComment => {
@@ -94,7 +96,7 @@ const parseKeyValue = (line: string): TEnvironmentLineKeyValue => {
 };
 
 const parseEnvironmentLine = async (
-  line: string
+  line: string,
 ): Promise<TParseEnvironmentLineReturnType> => {
   const sanitized = line.trim();
 
