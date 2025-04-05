@@ -7,13 +7,15 @@ type TSetupParams = {
   /**
    * Path to the `.env` file to be parsed.
    */
-  file: PathLike;
+  file?: PathLike;
 };
 
-export const setup = async ({
-  file,
-}: TSetupParams): Promise<TEnvironmentLineKeyValue[]> => {
-  const content = (await readFile(file, { encoding: "utf-8" })).split("\n");
+export const setup = async (
+  options?: TSetupParams
+): Promise<TEnvironmentLineKeyValue[]> => {
+  const content = (
+    await readFile(options?.file ?? ".env", { encoding: "utf-8" })
+  ).split("\n");
   const parsedLines = await parseEnvironment({ content });
 
   /**
@@ -28,3 +30,5 @@ export const setup = async ({
   await extendEnvironment({ entries });
   return entries;
 };
+
+export type { TEnvironmentLineKeyValue };

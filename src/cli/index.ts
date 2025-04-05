@@ -4,7 +4,6 @@ import { setup } from "../library";
 import { generateObelisqFile } from "../library/generated";
 import { readFile, writeFile } from "node:fs/promises";
 import { parseEnvironment, TEnvironmentLineKeyValue } from "../library/parser";
-import { environment } from "./obelisq";
 
 const program = new Command();
 
