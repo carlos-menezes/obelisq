@@ -2,6 +2,8 @@
 
 Load environment variables from `.env` into `NodeJS.ProcessEnv`.
 
+![](./.github/images/hero.png)
+
 ## Install
 
 ```ts
