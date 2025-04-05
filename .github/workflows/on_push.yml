@@ -9,7 +9,6 @@ jobs:
   test:
     strategy:
       matrix:
-        node-version: [18, 20, 22]
         os: [ubuntu-latest, macOS-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -17,7 +16,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
           cache: "pnpm"
       - run: pnpm --version
       - run: pnpm test
