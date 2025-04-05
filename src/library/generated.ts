@@ -7,7 +7,7 @@ type TGenerateObelisqFileParams = {
 const generateEnvironmentKeysType = ({
   entries,
 }: Pick<TGenerateObelisqFileParams, "entries">) => {
-  return `type TObelisqEnvironmentKeys = {
+  return `export type TObelisqEnvironmentKeys = {
   ${entries
     .map(({ key, metadata }) => `${key}: ${metadata.type};`)
     .join("\n  ")}

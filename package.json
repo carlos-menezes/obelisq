@@ -1,13 +1,14 @@
 {
   "name": "obelisq",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Load environment variables from `.env` into `NodeJS.ProcessEnv`.",
   "main": "dist/library/index.js",
   "bin": {
     "obelisq": "dist/cli/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    ".repo"
   ],
   "exports": {
     ".": {

@@ -2,7 +2,7 @@
 
 Load environment variables from `.env` into `NodeJS.ProcessEnv`.
 
-![](./.github/images/hero.png)
+![](./.repo/images/hero.png)
 
 ## Install
 
