@@ -1,7 +1,7 @@
 {
   "name": "obelisq",
   "version": "0.1.0",
-  "description": "A package for accessing environment variables in a Node.js application",
+  "description": "Load environment variables from `.env` into `NodeJS.ProcessEnv`.",
   "main": "dist/library/index.js",
   "bin": {
     "obelisq": "dist/cli/index.js"
@@ -16,13 +16,13 @@
     }
   },
   "scripts": {
-    "build": "tsup src/cli/index.ts src/library/index.ts --sourcemap --format esm --dts",
+    "build": "tsup src/cli/index.ts src/library/index.ts --sourcemap --format esm,cjs --dts --no-splitting --clean",
     "prepublish": "pnpm run build",
     "test": "mocha --require ts-node/register --timeout 10000 --exit \"src/**/*.test.ts\"",
     "prepare": "husky"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carlos Menezes <talk@carlos-menezes.com>",
   "license": "ISC",
   "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271",
   "devDependencies": {
@@ -57,5 +57,8 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
