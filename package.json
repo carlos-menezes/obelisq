@@ -21,6 +21,10 @@
     "test": "mocha --require ts-node/register --timeout 10000 --exit \"src/**/*.test.ts\"",
     "prepare": "husky"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlos-menezes/obelisq.git"
+  },
   "keywords": [],
   "author": "Carlos Menezes <talk@carlos-menezes.com>",
   "license": "ISC",
