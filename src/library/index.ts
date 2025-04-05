@@ -10,8 +10,10 @@ type TSetupParams = {
   file: PathLike;
 };
 
-export const setup = async ({ file }: TSetupParams) => {
-  const content = (await readFile(".env", { encoding: "utf-8" })).split("\n");
+export const setup = async ({
+  file,
+}: TSetupParams): Promise<TEnvironmentLineKeyValue[]> => {
+  const content = (await readFile(file, { encoding: "utf-8" })).split("\n");
   const parsedLines = await parseEnvironment({ content });
 
   /**
@@ -24,4 +26,5 @@ export const setup = async ({ file }: TSetupParams) => {
   ) as TEnvironmentLineKeyValue[];
 
   await extendEnvironment({ entries });
+  return entries;
 };
