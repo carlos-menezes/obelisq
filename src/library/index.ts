@@ -7,11 +7,11 @@ type TSetupParams = {
   /**
    * Path to the `.env` file to be parsed.
    */
-  file?: PathLike;
+  file?: PathLike[];
 };
 
 export const setup = async (
-  options?: TSetupParams
+  options?: TSetupParams,
 ): Promise<TEnvironmentLineKeyValue[]> => {
   const content = (
     await readFile(options?.file ?? ".env", { encoding: "utf-8" })
@@ -24,7 +24,7 @@ export const setup = async (
    * We may eventually use the other types, but for now we only care about key-value pairs.
    */
   const entries = parsedLines.filter(
-    (entry) => entry.kind === "key-value"
+    (entry) => entry.kind === "key-value",
   ) as TEnvironmentLineKeyValue[];
 
   await extendEnvironment({ entries });

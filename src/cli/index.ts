@@ -5,6 +5,7 @@ import { setup } from "../library";
 import { generateObelisqFile } from "../library/generated";
 import { parseEnvironment, TEnvironmentLineKeyValue } from "../library/parser";
 import spawn from "cross-spawn";
+import { repeatable } from "./helpers";
 
 const program = new Command();
 
@@ -12,7 +13,9 @@ program.name("obelisq").description("Obelisq CLI").version(packageJson.version);
 
 program
   .command("run", { isDefault: true })
-  .option("-f, --file <string>", "path to environment file", ".env")
+  .option("-f, --file <string>", "path to environment file", repeatable, [
+    ".env",
+  ])
   .allowExcessArguments(true)
   .action(async (options) => {
     await setup({ file: options.file });
@@ -54,7 +57,7 @@ program
     const content = (await readFile(".env", { encoding: "utf-8" })).split("\n");
     const parsedLines = await parseEnvironment({ content });
     const entries = parsedLines.filter(
-      (entry) => entry.kind === "key-value"
+      (entry) => entry.kind === "key-value",
     ) as TEnvironmentLineKeyValue[];
 
     const outputPath = options.output || "obelisq.ts";
