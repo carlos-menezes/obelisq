@@ -5,22 +5,20 @@ import assert from "assert";
 describe("environment.ts", () => {
   it("should extend the environment", async () => {
     await extendEnvironment({
-      entries: [
-        {
-          key: "TEST_KEY",
+      entries: {
+        TEST_KEY: {
           value: "TEST_VALUE",
-          kind: "key-value",
           metadata: {
             type: "string",
           },
         },
-      ],
+      },
     });
 
     assert.equal(
       process.env.TEST_KEY,
       "TEST_VALUE",
-      "Environment variable not set correctly"
+      "Environment variable not set correctly",
     );
   });
 });

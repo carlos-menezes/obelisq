@@ -2,50 +2,22 @@ import { resolveEnvironmentVariables } from "./resolver";
 
 type TMetadataType = "string" | "number" | "boolean";
 
-export type TParseEnvironmentLineReturnType =
-  | {
-      /**
-       * A comment line is reserved for future use. Although not implemented right now,
-       * it may be used to provide type hints for the environment variables which helps during generation.
-       */
-      kind: "comment";
-      key?: never;
-      value: string;
-      metadata?: never;
-    }
-  | {
-      kind: "key-value";
-      key: string;
-      value: string;
-      metadata: {
-        type: TMetadataType;
-      };
-    }
-  | {
-      kind: "empty";
-      key?: never;
-      value?: never;
-      metadata?: never;
-    };
-
-export type TEnvironmentLineComment = Extract<
-  TParseEnvironmentLineReturnType,
-  { kind: "comment" }
->;
-
-export type TEnvironmentLineKeyValue = Extract<
-  TParseEnvironmentLineReturnType,
-  { kind: "key-value" }
->;
-
-export type TEnvironmentLineEmpty = Extract<
-  TParseEnvironmentLineReturnType,
-  { kind: "empty" }
->;
+export type TKeyValue = {
+  key: string;
+  value: string;
+  metadata: {
+    type: TMetadataType;
+  };
+};
 
 type TParseEnvironmentParams = {
   content: string[];
 };
+
+export type TParseEnvironmentReturnType = Record<
+  string,
+  Pick<TKeyValue, "metadata" | "value">
+>;
 
 type TAssumeValueTypeParams = {
   value: string;
@@ -68,16 +40,7 @@ const assumeValueType = ({ value }: TAssumeValueTypeParams): TMetadataType => {
   return "string";
 };
 
-const parseComment = (line: string): TEnvironmentLineComment => {
-  const value = line.slice(1).trim();
-
-  return {
-    kind: "comment",
-    value,
-  };
-};
-
-const parseKeyValue = (line: string): TEnvironmentLineKeyValue => {
+const parseKeyValue = (line: string): TKeyValue => {
   const [key, ...valueParts] = line.split("=");
   const value = valueParts.join("=").trim();
 
@@ -86,7 +49,6 @@ const parseKeyValue = (line: string): TEnvironmentLineKeyValue => {
   }
 
   return {
-    kind: "key-value",
     key: key.trim(),
     value: value.trim(),
     metadata: {
@@ -95,25 +57,22 @@ const parseKeyValue = (line: string): TEnvironmentLineKeyValue => {
   };
 };
 
-const parseEnvironmentLine = async (
-  line: string,
-): Promise<TParseEnvironmentLineReturnType> => {
-  const sanitized = line.trim();
-
-  if (sanitized.startsWith("#")) return parseComment(sanitized);
-
-  if (sanitized === "") {
-    return {
-      kind: "empty",
-    };
-  }
-
-  return parseKeyValue(sanitized);
-};
-
 export const parseEnvironment = async ({
   content,
-}: TParseEnvironmentParams): Promise<TParseEnvironmentLineReturnType[]> =>
-  resolveEnvironmentVariables({
-    entries: await Promise.all(content.map(parseEnvironmentLine)),
+}: TParseEnvironmentParams): Promise<TParseEnvironmentReturnType> => {
+  // Remove empty lines and comments
+  const sanitizedLines = content.filter(
+    (line) => line.trim() !== "" || line.trim().startsWith("#"),
+  );
+
+  const entries: TParseEnvironmentReturnType = {};
+
+  for (const line of sanitizedLines) {
+    const { key, ...rest } = parseKeyValue(line);
+    entries[key] = rest;
+  }
+
+  return await resolveEnvironmentVariables({
+    entries,
   });
+};

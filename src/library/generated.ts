@@ -1,15 +1,15 @@
-import { TEnvironmentLineKeyValue } from "./parser";
+import { TParseEnvironmentReturnType } from "./parser";
 
 type TGenerateObelisqFileParams = {
-  entries: TEnvironmentLineKeyValue[];
+  entries: TParseEnvironmentReturnType;
 };
 
 const generateEnvironmentKeysType = ({
   entries,
 }: Pick<TGenerateObelisqFileParams, "entries">) => {
   return `export type TObelisqEnvironmentKeys = {
-  ${entries
-    .map(({ key, metadata }) => `${key}: ${metadata.type};`)
+  ${Object.entries(entries)
+    .map(([key, { metadata }]) => `${key}: ${metadata.type};`)
     .join("\n  ")}
 };`;
 };
