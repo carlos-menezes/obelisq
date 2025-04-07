@@ -21,8 +21,6 @@ export const setup = async (
     )
   ).flat();
 
-  console.log(mergedFilesContent);
-
   const entries = await parseEnvironment({
     content: mergedFilesContent,
   });

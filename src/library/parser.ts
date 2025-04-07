@@ -62,7 +62,7 @@ export const parseEnvironment = async ({
 }: TParseEnvironmentParams): Promise<TParseEnvironmentReturnType> => {
   // Remove empty lines and comments
   const sanitizedLines = content.filter(
-    (line) => line.trim() !== "" || line.trim().startsWith("#"),
+    (line) => line.trim() !== "" && line.trim().startsWith("#"),
   );
 
   const entries: TParseEnvironmentReturnType = {};

@@ -30,7 +30,7 @@ await setup({
 });
 ```
 
-You can also run `$ obelisq -f <patb> -s "<script>"` to load the environment variables from the file at `path` into `process.env` for another Node script. Say you have a file `log-env.js` which simply executes `console.log(process.env)`. You can inject the values from your environment file into `process.env` by running the following command:
+You can also run `$ obelisq -f <path> -s "<script>"` to load the environment variables from the file at `path` into `process.env` for another Node script. Say you have a file `log-env.js` which simply executes `console.log(process.env)`. You can inject the values from your environment file into `process.env` by running the following command:
 
 ```sh
 $ obelisq -f .env -s "node log-env.js"
