@@ -1,39 +1,29 @@
-import { TParseEnvironmentLineReturnType } from "./parser";
+import { TParseEnvironmentReturnType } from "./parser";
 
 type TResolveEnvironmentVariablesParams = {
-  entries: TParseEnvironmentLineReturnType[];
+  entries: TParseEnvironmentReturnType;
 };
+
+const TEMPLATE_VARIABLE_REGEX = new RegExp(/\$\{([\w]+)\}/g);
 
 export const resolveEnvironmentVariables = async ({
   entries,
-}: TResolveEnvironmentVariablesParams): Promise<
-  TParseEnvironmentLineReturnType[]
-> =>
-  entries.map((entry) => {
-    if (entry.kind !== "key-value") return entry;
-
-    const resolvedValue = entry.value?.replace(
-      /\$\{([\w]+)\}/g,
-      (_, variable) => {
-        const entry = entries.find(
-          (entry) => entry.kind === "key-value" && entry.key === variable
-        );
-
-        if (!entry || !entry.value) {
-          throw new Error(
-            `Environment variable "${entry}" not found while resolving "${entry?.key}=${entry?.value}"`
-          );
-        }
-
-        return entry.value;
-      }
-    );
-
-    return {
-      ...entry,
-      value: resolvedValue,
-      metadata: {
-        ...entry.metadata,
+}: TResolveEnvironmentVariablesParams): Promise<TParseEnvironmentReturnType> => {
+  return Object.fromEntries(
+    Object.entries(entries).map(([key, { metadata, value }]) => [
+      key,
+      {
+        metadata,
+        value: value.replace(TEMPLATE_VARIABLE_REGEX, (_, variable) => {
+          const entry = entries[variable];
+          if (!entry) {
+            throw new Error(
+              `Environment variable "${variable}" not found while resolving "${key}=${value}"`,
+            );
+          }
+          return entry.value;
+        }),
       },
-    };
-  });
+    ]),
+  );
+};
