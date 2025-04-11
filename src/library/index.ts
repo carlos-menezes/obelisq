@@ -24,6 +24,7 @@ export const setup = async (
   const entries = await parseEnvironment({
     content: mergedFilesContent,
   });
+
   await extendEnvironment({ entries });
 
   return entries;
