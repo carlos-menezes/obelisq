@@ -12,7 +12,11 @@ program.name("obelisq").description("Obelisq CLI").version(packageJson.version);
 
 program
   .command("run", { isDefault: true })
-  .requiredOption("-f, --file <string>", "path to environment file", repeatable)
+  .requiredOption(
+    "-f, --file <string>",
+    "paths to environment files",
+    repeatable,
+  )
   .option("-s, --spawn <string>", "spawn a process with the given command")
   .allowExcessArguments(true)
   .action(async (options) => {
